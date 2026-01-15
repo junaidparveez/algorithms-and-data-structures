@@ -1,12 +1,15 @@
 package arrays;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LongestSubArrayOfSumK {
 
 	public static void main(String[] args) {
 
 		int[] nums = { 1, 2, 3, 1, 1, 1, 1, 4, 2, 3 };
 		int k = 3;
-		int longest = longestSubArrayBruteSolution(nums, k);
+		int longest = longestSubArrayBetterSolution(nums, k);
 		System.out.println("longest " + longest);
 	}
 
@@ -24,6 +27,32 @@ public class LongestSubArrayOfSumK {
 					maxlen=max(maxlen,j-i+1);
 				}
 			}
+			
+		}
+		
+		return maxlen;
+	}
+	
+	private static int longestSubArrayBetterSolution(int[] nums, int k) {
+		int n=nums.length;
+		int maxlen=0;
+		int sum=0;
+		Map<Integer,Integer> sumIndexPositionMap=new HashMap<>();
+		for(int i=0;i<n;i++)
+		{
+			sum=sum+nums[i];
+			if(sum==k)
+			{
+				maxlen=max(maxlen,i+1);
+				
+			}
+			int remaining=sum-k;
+			if(sumIndexPositionMap.containsKey(remaining))
+			{
+				int remLen=i-sumIndexPositionMap.get(remaining);
+				maxlen=max(maxlen,remLen);
+			}
+			sumIndexPositionMap.put(sum, i);
 			
 		}
 		
